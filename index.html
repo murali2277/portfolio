@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Murali Kumar - Python Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Network background -->
+<canvas id="network-bg"></canvas>
+
+
+
+
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">MK</span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section with Gaming Setup Background -->
+<!-- Hero Section with Gaming Setup Background -->
+<section id="home" class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <div class="content-container">
+            <div class="text-content">
+                <div class="greeting">Hello, I'm</div>
+                <h1 class="hero-title">Murali Kumar S</h1>
+                <!-- Updated subtitle with typing animation -->
+                <div class="hero-subtitle">
+                    <span id="typewriter-text"></span>
+                    <span class="cursor">|</span>
+                </div>
+                <div class="hero-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Tamil Nadu, India</span>
+                </div>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn-primary">
+                        <span>View My Projects</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="#contact" class="btn-secondary">
+                        <span>Get In Touch</span>
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Updated scroll indicator as clickable down arrow -->
+    <div class="scroll-down-arrow" id="scrollDownArrow">
+        <i class="fas fa-chevron-down"></i>
+    </div>
+</section>
+
+
+    <!-- About Section -->
+    <section id="about" class="section about-section">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <p class="about-text">
+                    I am a dedicated Python developer specializing in secure backend systems and robust web applications. Skilled in Python, Django, FastAPI, C, Java, JavaScript, HTML5, CSS3, MySQL, Supabase, Docker, Git, Postman, Wireshark, AWS, and Linux. My expertise spans from building high-performance APIs and implementing comprehensive security measures to vulnerability assessment and penetration testing. I focus on security-first development practices, creating scalable backend architectures, and exploring emerging technologies to deliver robust solutions that bridge the gap between performance and cybersecurity. Based in Tamil Nadu, India, I am passionate about contributing to projects that push the boundaries of <br>secure backend development.
+                </p>
+                <!-- <div class="goals">
+                    <h3>My Goals</h3>
+                    <ul class="goals-list">
+                        <li><i class="fas fa-shield-alt"></i>Develop secure web applications</li>
+                        <li><i class="fas fa-server"></i>Build robust and scalable backend systems</li>
+                        <li><i class="fas fa-lock"></i>Implement advanced security practices</li>
+                    </ul>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+   <!-- GitHub Stats Section -->
+
+    <!-- GitHub and LeetCode Stats Section -->
+ <!-- GitHub and LeetCode Stats Section -->
+<section id="stats" class="section stats-section">
+    <div class="container">
+        <h2 class="section-title">My Coding Activity</h2>
+        <div class="stats-grid">
+            
+            <!-- Card 1: GitHub Stats (Top-Left) -->
+            <a href="https://github.com/murali2277" target="_blank" rel="noopener noreferrer" class="stats-card">
+                <img id="github-stats-img" alt="Murali's GitHub Stats">
+            </a>
+
+            <!-- Card 2: GitHub Languages (Bottom-Left) -->
+            <a href="https://github.com/murali2277" target="_blank" rel="noopener noreferrer" class="stats-card">
+                <img id="github-languages-img" alt="Murali's Most Used Languages">
+            </a>
+             <!-- Card 3: LeetCode Stats (Top-Right) -->
+            <a href="https://leetcode.com/u/muralikumars/" target="_blank" rel="noopener noreferrer" class="stats-card">
+                <img id="leetcode-stats-img" alt="Murali's LeetCode Stats">
+            </a>
+            
+            <!-- Card 4: LeetCode Activity (Bottom-Right) -->
+            <a href="https://leetcode.com/u/muralikumars/" target="_blank" rel="noopener noreferrer" class="stats-card">
+                <img id="leetcode-activity-img" alt="Murali's LeetCode Activity Graph">
+            </a>
+
+        </div>
+    </div>
+</section>
+
+
+
+
+
+    <!-- Projects Section -->
+    <section id="projects" class="section projects-section">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Projects will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section skills-section">
+        <div class="container">
+            <h2 class="section-title">Tech Stack</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Languages</h3>
+                    <div class="skills-list">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">C</span>
+                        <span class="skill-tag">Java</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Web</h3>
+                    <div class="skills-list">
+                        <span class="skill-tag">HTML5</span>
+                        <span class="skill-tag">CSS3</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Frameworks</h3>
+                    <div class="skills-list">
+                        <span class="skill-tag">Django</span>
+                        <span class="skill-tag">FastAPI</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Tools</h3>
+                    <div class="skills-list">
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">Postman</span>
+                        <span class="skill-tag">Wireshark</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Databases</h3>
+                    <div class="skills-list">
+                        <span class="skill-tag">MySQL</span>
+                        <span class="skill-tag">Supabase</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Cloud</h3>
+                    <div class="skills-list">
+                        <span class="skill-tag">AWS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-grid">
+                <a href="https://github.com/murali2277" target="_blank" class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h3>GitHub</h3>
+                        <p>@murali2277</p>
+                    </div>
+                </a>
+                <a href="mailto:0904muralikumar@gmail.com" class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h3>Email</h3>
+                        <p>0904muralikumar@gmail.com</p>
+                    </div>
+                </a>
+                <a href="https://www.linkedin.com/in/murali-kumar-s-12994b291?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fab fa-linkedin"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h3>LinkedIn</h3>
+                        <p>Murali Kumar S</p>
+                    </div>
+                </a>
+                <a href="https://leetcode.com/u/muralikumars/" target="_blank" class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-code" style="color: #fdfbf9;"></i>
+
+                    </div>
+                    <div class="contact-info">
+                        <h3>Leetcode</h3>
+                        <p>muralikumars</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Murali Kumar. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
