@@ -462,7 +462,7 @@ body {
     transform: translateY(-5px);
     border-color: var(--primary-color);
     box-shadow: 0 10px 30px var(--shadow);
-}
+}   
 
 .skill-category h3 {
     font-size: 1.25rem;
@@ -470,26 +470,64 @@ body {
     margin-bottom: 1.5rem;
 }
 
+/* --- Updated Skills Section: Grid Alignment & Full Icon Colors --- */
+
+/* Use a grid for a clean 2-column layout */
 .skills-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    justify-items: start; /* Aligns tags to the left */
+}
+
+/* Align icons and text in category headings */
+.skill-category h3 {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+    align-items: center;
     justify-content: center;
+    gap: 0.75rem;
 }
 
+/* Align icons and text inside the skill tags */
 .skill-tag {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--text-secondary);
-    padding: 0.5rem 1rem;
-    border-radius: 25px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
 }
 
-.skill-tag:hover {
-    background: var(--primary-color);
+/* Give icons a fixed width for perfect alignment */
+.skill-tag i {
+    width: 20px;
+    text-align: center;
+}
+
+/* --- 1. Default Icon Colors --- */
+/* Official Brand Icons */
+.skill-tag .fab.fa-python { color: #3776AB; }
+.skill-tag .fab.fa-java { color: #f89820; }
+.skill-tag .fab.fa-js-square { color: #F7DF1E; }
+.skill-tag .fab.fa-html5 { color: #E34F26; }
+.skill-tag .fab.fa-css3-alt { color: #1572B6; }
+.skill-tag .fab.fa-docker { color: #2496ED; }
+.skill-tag .fab.fa-git-alt { color: #F05032; }
+.skill-tag .fab.fa-aws { color: #FF9900; }
+.skill-tag .fab.fa-linux { color: #FCC624; }
+
+/* Custom Brand-like Colors for Generic Icons */
+.skill-icon-c { color: #5C96B8; }
+.skill-icon-django { color: #0C4B33; }
+.skill-icon-fastapi { color: #009688; }
+.skill-icon-postman { color: #FF6C37; }
+.skill-icon-wireshark { color: #1E67C6; }
+.skill-icon-mysql { color: #4479A1; }
+.skill-icon-supabase { color: #3ECF8E; } /* Supabase has its own green */
+
+
+/* --- 2. Reversed Hover Effect --- */
+/* When the tag is hovered, the icon inside changes to the text hover color */
+.skill-tag:hover i {
     color: var(--dark-bg);
+    transition: color 0.3s ease;
 }
 
 /* Contact Grid */
@@ -895,8 +933,6 @@ body {
     }
 }
 
-
-
 .languages-card {
   display: flex;
   flex-direction: column;
@@ -1076,4 +1112,23 @@ body {
     font-size: 2rem;
     margin-bottom: 0.5rem;
     color: var(--secondary-color, #ff6b6b);
+}
+
+.hero-socials {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem; /* Adjusts space between icons */
+    margin-bottom: 3rem; /* Space before the buttons below */
+    animation: fadeInUp 1s ease-out 0.7s both; /* Staggered fade-in animation */
+}
+
+.hero-socials a {
+    color: var(--text-secondary);
+    font-size: 1.5rem; /* Size of the icons */
+    transition: all 0.3s ease;
+}
+
+.hero-socials a:hover {
+    color: var(--primary-color);
+    transform: translateY(-3px); /* Lifts the icon slightly on hover */
 }
