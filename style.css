@@ -200,7 +200,7 @@ body {
     justify-content: center;
     gap: 0.5rem;
     color: var(--text-muted);
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     font-size: 1rem;
     animation: fadeInUp 1s ease-out 0.6s both;
 }
