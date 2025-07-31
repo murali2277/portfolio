@@ -211,10 +211,11 @@ body {
 
 .hero-buttons {
     display: flex;
-    gap: 1.5rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    animation: fadeInUp 1s ease-out 0.8s both;
+  justify-content: space-between; /* Push buttons to edges */
+  max-width: 500px;               /* Limit container width */
+  margin: 0 auto 0 auto;          /* Center container horizontally */
+  gap: 1rem;                     /* Space between buttons */
+  flex-wrap: nowrap;
 }
 
 /* Buttons */
@@ -233,6 +234,8 @@ body {
     border: 2px solid transparent;
     min-width: 180px;
     justify-content: center;
+    flex: 1;                       /* Buttons take equal available width */
+  max-width: 240px; 
 }
 
 .btn-primary {
@@ -426,20 +429,49 @@ body {
 }
 
 .project-links {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 
 .project-link {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
+  display: inline-flex;            /* Use inline-flex for proper alignment */
+  align-items: center;             /* Vertically center icon and text */
+  gap: 0.5rem;                    /* Space between icon and text */
+  padding: 0.5rem 1rem;            /* Add consistent padding */
+  border-radius: 8px;              /* Rounded corners for button look */
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.project-link:hover {
-    color: var(--text-primary);
+.project-link i {
+  font-size: 1rem;
+  line-height: 1;
 }
+
+/* Differentiate buttons by style if you want */
+.project-link:first-child {
+  background-color: var(--primary-color);
+  color: var(--text-primary);
+}
+
+.project-link:first-child:hover {
+  background-color: #00cc6a; /* Slightly darker for hover */
+}
+
+.project-link:last-child {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+}
+
+.project-link:last-child:hover {
+  background-color: var(--primary-color);
+  color: var(--dark-bg);
+}
+
 
 /* Skills Grid */
 .skills-grid {
