@@ -1,7 +1,3 @@
-// =================================================================
-// ==  1. CLASS AND HELPER FUNCTION DEFINITIONS
-// =================================================================
-
 class TypeWriter {
     constructor(txtElement, words, wait = 3000) {
         this.txtElement = txtElement;
@@ -34,10 +30,6 @@ const handleImageError = (cardElement) => {
     cardElement.classList.add('error');
     cardElement.innerHTML = `<div class="error-fallback"><span>!</span><p>Could not load stats.</p></div>`;
 };
-
-// =================================================================
-// ==  2. MAIN INITIALIZATION SCRIPT (Runs once when DOM is ready)
-// =================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -100,10 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
-
-// =================================================================
-// ==  3. FEATURE-SPECIFIC INITIALIZATION AND LOGIC FUNCTIONS
-// =================================================================
 
 function initStatsCards() {
     const githubUser = 'murali2277';
@@ -283,7 +271,6 @@ function initButtonRipples() {
         });
     });
 }
-
 
 // --- PROJECT FETCHING LOGIC ---
 async function fetchGitHubProjects() {
