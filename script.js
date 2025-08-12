@@ -283,6 +283,8 @@ async function fetchGitHubProjects() {
             'vulnerabality-scanner',
             'Bus_Attendance_System',
             'bus-live-tracking',
+            '6-axis', // Keep original name for API fetch
+            'travel_webpage', // Keep original name for API fetch
             'ai-assistent-for-cyber-law',
             'EduQuiz',
             'portfolio'
@@ -357,6 +359,24 @@ function displayFallbackProjects() {
             topics: ["GPS", "Real-time", "Tracking"]
         },
         {
+            name: "6-axis",
+            description: "A project demonstrating control over a 6-axis robotic arm, focusing on precision movement and automation.",
+            html_url: "https://github.com/murali2277/6-axis",
+            homepage: "https://six-axis-frontend.onrender.com/",
+            language: "C++",
+            topics: ["Robotics", "Automation", "Control Systems"],
+            displayName: "Robotic Arm Control System" // New display name
+        },
+        {
+            name: "travel_webpage",
+            description: "A dynamic travel website showcasing various destinations, travel packages, and booking functionalities.",
+            html_url: "https://github.com/murali2277/travel_webpage",
+            homepage: "https://travel-webpage-demo.vercel.app/",
+            language: "HTML",
+            topics: ["Web Development", "Travel", "Frontend"],
+            displayName: "Dynamic Travel Portal" // New display name
+        },
+        {
             name: "ai-assistent-for-cyber-law",
             description: "AI-powered assistant specialized in cyber law consultation and legal guidance for cybersecurity matters.",
             html_url: "https://github.com/murali2277/ai-assistent-for-cyber-law",
@@ -375,7 +395,7 @@ function displayFallbackProjects() {
             description: "The source code for this portfolio website, built with modern HTML, CSS, and dynamic JavaScript to showcase my projects and skills.",
             html_url: "https://github.com/murali2277/portfolio",
             language: "JavaScript",
-            topics: ["Portfolio", "JavaScript", "Frontend"]
+            topics: ["Portfolio", "JavaScript', 'React.js', 'Node.js", "Frontend"]
         }
     ];
     displayProjects(fallbackProjects);
@@ -383,6 +403,14 @@ function displayFallbackProjects() {
 
 
 function formatProjectName(name) {
+    // Check for a custom display name first
+    const customNames = {
+        '6-axis': 'Robotic Arm Control System',
+        'travel_webpage': 'Dynamic Travel Portal'
+    };
+    if (customNames[name.toLowerCase()]) {
+        return customNames[name.toLowerCase()];
+    }
     return name.replace(/[-_]/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
 }
 
@@ -391,6 +419,8 @@ function getDefaultDescription(projectName) {
         'vulnerabality-scanner': 'Advanced vulnerability scanning tool designed to identify security weaknesses in web applications and networks.',
         'bus_attendance_system': 'An automated attendance system for buses, leveraging technology to efficiently track passenger or student presence.',
         'bus-live-tracking': 'Real-time bus tracking system with GPS integration for monitoring public transportation routes and schedules.',
+        '6-axis': 'A project demonstrating control over a 6-axis robotic arm, focusing on precision movement and automation.',
+        'travel_webpage': 'A dynamic travel website showcasing various destinations, travel packages, and booking functionalities.',
         'ai-assistent-for-cyber-law': 'AI-powered assistant specialized in cyber law consultation and legal guidance for cybersecurity matters.',
         'eduquiz': 'An educational quiz platform designed to help students learn and test their knowledge on various subjects.',
         'portfolio': 'The source code for this portfolio website, built with modern HTML, CSS, and dynamic JavaScript to showcase my projects and skills.'
@@ -403,11 +433,12 @@ function getProjectSpecificTags(projectName) {
         'vulnerabality-scanner': ['Security', 'Scanner', 'Cybersecurity'],
         'bus_attendance_system': ['Automation', 'Python', 'System'],
         'bus-live-tracking': ['GPS', 'Real-time', 'Tracking'],
+        '6-axis': ['Robotics', 'Automation', 'Control Systems'],
+        'travel_webpage': ['Web Development', 'Travel', 'Frontend'],
         'ai-assistent-for-cyber-law': ['AI', 'Legal Tech', 'Assistant'],
         'eduquiz': ['Education', 'Quiz', 'Web App'],
-        'portfolio': ['Portfolio', 'JavaScript', 'Frontend']
+        'portfolio': ['Portfolio', 'JavaScript','Frontend']
     };
     // Prioritize specific tags, otherwise use generic for languages or topics
     return tagMap[projectName.toLowerCase()] || []; // Ensure it returns an array
 }
-
