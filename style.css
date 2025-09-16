@@ -573,12 +573,6 @@ body {
 .skill-icon-mysql { color: #4479A1; }
 .skill-icon-supabase { color: #3ECF8E; } /* Supabase has its own green */
 
-/* When the tag is hovered, the icon inside changes to the text hover color */
-.skill-tag:hover i {
-    color: var(--dark-bg);
-    transition: color 0.3s ease;k
-}
-
 /* Contact Grid */
 .contact-grid {
     display: grid;
