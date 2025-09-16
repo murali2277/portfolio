@@ -101,7 +101,6 @@ function initStatsCards() {
     const statCards = [
         { id: 'github-stats-img', url: `https://github-readme-stats.vercel.app/api?username=${githubUser}&show_icons=true&theme=transparent&hide_border=true&title_color=${theme.title}&text_color=${theme.text}&icon_color=${theme.icon}` },
         { id: 'github-languages-img', url: `https://github-readme-stats.vercel.app/api/top-langs/?username=${githubUser}&layout=compact&theme=transparent&hide_border=true&title_color=${theme.title}&text_color=${theme.text}&bg_color=${theme.bg}` },
-        { id: 'leetcode-stats-img', url: `https://leetcard.jacoblin.cool/${leetcodeUser}?theme=dark&font=Poppins&radius=8` },
         { id: 'github-streak-img', url: `https://streak-stats.demolab.com/?user=${githubUser}&theme=transparent&hide_border=true&background=${theme.bg}&stroke=${theme.icon}&ring=${theme.icon}&fire=${theme.icon}&curr_streak_text_color=${theme.text}&side_stats=false` }
     ];
 
@@ -280,6 +279,7 @@ async function fetchGitHubProjects() {
         
         // Define the exact order of projects you want to display
         const projectOrder = [
+            'LAN_Auto_Install',
             'vulnerabality-scanner',
             'Bus_Attendance_System',
             'bus-live-tracking',
@@ -334,6 +334,15 @@ function displayProjects(projects) {
 // Fallback projects with live links
 function displayFallbackProjects() {
     const fallbackProjects = [
+        {
+            name: "LAN_Auto_Install",
+            description: "Automated LAN installation system for network devices and software deployment.",
+            html_url: "https://github.com/murali2277/LAN_Auto_Install",
+            homepage: "",
+            language: "Python",
+            topics: ["Network Automation", "Deployment", "System Administration"],
+            displayName: "novanet"
+        },
         {
             name: "vulnerabality-scanner",
             description: "Advanced vulnerability scanning tool designed to identify security weaknesses in web applications and networks.",
@@ -406,7 +415,8 @@ function formatProjectName(name) {
     // Check for a custom display name first
     const customNames = {
         '6-axis': 'Robotic Arm Control System',
-        'travel_webpage': 'Dynamic Travel Portal'
+        'travel_webpage': 'Dynamic Travel Portal',
+        'lan_auto_install': 'NovaNet'
     };
     if (customNames[name.toLowerCase()]) {
         return customNames[name.toLowerCase()];
@@ -416,6 +426,7 @@ function formatProjectName(name) {
 
 function getDefaultDescription(projectName) {
     const descriptionMap = {
+        'lan_auto_install': 'Automated LAN installation system for network devices and software deployment.',
         'vulnerabality-scanner': 'Advanced vulnerability scanning tool designed to identify security weaknesses in web applications and networks.',
         'bus_attendance_system': 'An automated attendance system for buses, leveraging technology to efficiently track passenger or student presence.',
         'bus-live-tracking': 'Real-time bus tracking system with GPS integration for monitoring public transportation routes and schedules.',
@@ -430,6 +441,7 @@ function getDefaultDescription(projectName) {
 
 function getProjectSpecificTags(projectName) {
     const tagMap = {
+        'lan_auto_install': ['Network Automation', 'Deployment', 'System Administration'],
         'vulnerabality-scanner': ['Security', 'Scanner', 'Cybersecurity'],
         'bus_attendance_system': ['Automation', 'Python', 'System'],
         'bus-live-tracking': ['GPS', 'Real-time', 'Tracking'],
