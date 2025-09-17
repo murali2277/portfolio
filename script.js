@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Initialize Core Features ---
     // Typing Animation for Hero Section
     if (document.getElementById('typewriter-text')) {
-        new TypeWriter(document.getElementById('typewriter-text'), ['Python Developer', 'Backend Enthusiast', 'Security Learner'], 2000);
+        new TypeWriter(document.getElementById('typewriter-text'), ['Full Stack Developer', 'Python Developer', 'Backend Enthusiast', 'Security Learner'], 2000);
     }
 
     // Initialize all other features
