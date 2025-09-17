@@ -1,0 +1,21 @@
+{
+  "name": "Murali Kumar S Portfolio",
+  "short_name": "MK Portfolio",
+  "description": "Python Full Stack Developer Portfolio",
+  "start_url": "/portfolio/",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#1a1a1a",
+  "icons": [
+    {
+      "src": "assets/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/favicon-32x32.png", 
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ]
+}
