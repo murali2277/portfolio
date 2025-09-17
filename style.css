@@ -572,6 +572,7 @@ body {
 .skill-icon-wireshark { color: #1E67C6; }
 .skill-icon-mysql { color: #4479A1; }
 .skill-icon-supabase { color: #3ECF8E; } /* Supabase has its own green */
+.skill-icon-nosql { color: #3ECF8E; }
 
 /* Contact Grid */
 .contact-grid {
