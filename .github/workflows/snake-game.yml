@@ -4,10 +4,7 @@ on:
   schedule:
     - cron: "0 0 * * *"
   workflow_dispatch:
-
-permissions:
-  contents: write
-
+    
 permissions:
   contents: write # Grant write permissions for contents
   pages: write # Grant write permissions for pages
