@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://murali2277.github.io/portfolio/sitemap.xml
+Sitemap: https://muralikumar.app/Sitemap.xml

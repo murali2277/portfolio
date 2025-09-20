@@ -2,7 +2,7 @@
   "name": "Murali Kumar S Portfolio",
   "short_name": "MK Portfolio",
   "description": "Python Full Stack Developer Portfolio",
-  "start_url": "/portfolio/",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1a1a",
   "theme_color": "#1a1a1a",
