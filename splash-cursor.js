@@ -1,10 +1,20 @@
 (function() {
-  let canvas = null;
-  let gl = null; // Initialize gl as null
-  let ext = null; // Initialize ext as null
-  let animationFrameId = null;
-  let lastUpdateTime = Date.now();
-  let colorUpdateTimer = 0.0;
+  console.log('splash-cursor.js: Script started.');
+  const canvas = document.createElement('canvas');
+  canvas.id = 'fluid';
+  canvas.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    pointer-events: none;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    opacity: 0; /* Start hidden */
+    transition: opacity 0.5s ease-in-out;
+  `;
+  document.body.appendChild(canvas);
 
   let SIM_RESOLUTION = 128;
   let DYE_RESOLUTION = 1440;
@@ -47,17 +57,22 @@
     SPLAT_FORCE,
     SHADING,
     COLOR_UPDATE_SPEED,
-    PAUSED: true,
+    PAUSED: false,
     BACK_COLOR,
     TRANSPARENT
   };
 
   let pointers = [new pointerPrototype()];
+  let gl, ext;
+  let animationFrameId;
+  let lastUpdateTime = Date.now();
+  let colorUpdateTimer = 0.0;
 
+  // Programs and Materials (defined outside start/stop to avoid re-creation)
   let copyProgram, clearProgram, splatProgram, advectionProgram, divergenceProgram, curlProgram, vorticityProgram, pressureProgram, gradienSubtractProgram, displayMaterial;
   let dye, velocity, divergence, curl, pressure;
 
-  function getWebGLContext(canvasElement) {
+  function getWebGLContext(canvas) {
     const params = {
       alpha: true,
       depth: false,
@@ -65,14 +80,9 @@
       antialias: false,
       preserveDrawingBuffer: false
     };
-    let webgl = canvasElement.getContext('webgl2', params);
+    let webgl = canvas.getContext('webgl2', params);
     const isWebGL2 = !!webgl;
-    if (!isWebGL2) webgl = canvasElement.getContext('webgl', params) || canvasElement.getContext('experimental-webgl', params);
-
-    if (!webgl) {
-      console.error("WebGL not supported or context creation failed.");
-      return { gl: null, ext: null };
-    }
+    if (!isWebGL2) webgl = canvas.getContext('webgl', params) || canvas.getContext('experimental-webgl', params);
 
     let halfFloat;
     let supportLinearFiltering;
@@ -482,7 +492,6 @@
   const blit = (() => {
     let buffer, elementBuffer;
     return (target, clear = false) => {
-      if (!gl) return;
       if (!buffer) {
         buffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -654,7 +663,6 @@
   }
 
   function resizeCanvas() {
-    if (!canvas) return false;
     let width = scaleByPixelRatio(canvas.clientWidth);
     let height = scaleByPixelRatio(canvas.clientHeight);
     if (canvas.width !== width || canvas.height !== height) {
@@ -749,14 +757,12 @@
   }
 
   function render(target) {
-    if (!gl) return;
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     gl.enable(gl.BLEND);
     drawDisplay(target);
   }
 
   function drawDisplay(target) {
-    if (!gl) return;
     let width = target == null ? gl.drawingBufferWidth : target.width;
     let height = target == null ? gl.drawingBufferHeight : target.height;
     displayMaterial.bind();
@@ -766,14 +772,12 @@
   }
 
   function splatPointer(pointer) {
-    if (!gl) return;
     let dx = pointer.deltaX * config.SPLAT_FORCE;
     let dy = pointer.deltaY * config.SPLAT_FORCE;
     splat(pointer.texcoordX, pointer.texcoordY, dx, dy, pointer.color);
   }
 
   function clickSplat(pointer) {
-    if (!gl) return;
     const color = generateColor();
     color.r *= 10.0;
     color.g *= 10.0;
@@ -784,7 +788,6 @@
   }
 
   function splat(x, y, dx, dy, color) {
-    if (!gl) return;
     splatProgram.bind();
     gl.uniform1i(splatProgram.uniforms.uTarget, velocity.read.attach(0));
     gl.uniform1f(splatProgram.uniforms.aspectRatio, canvas.width / canvas.height);
@@ -801,14 +804,12 @@
   }
 
   function correctRadius(radius) {
-    if (!canvas) return radius;
     let aspectRatio = canvas.width / canvas.height;
     if (aspectRatio > 1) radius *= aspectRatio;
     return radius;
   }
 
   function updatePointerDownData(pointer, id, posX, posY) {
-    if (!canvas) return;
     pointer.id = id;
     pointer.down = true;
     pointer.moved = false;
@@ -822,7 +823,6 @@
   }
 
   function updatePointerMoveData(pointer, posX, posY, color) {
-    if (!canvas) return;
     pointer.prevTexcoordX = pointer.texcoordX;
     pointer.prevTexcoordY = pointer.texcoordY;
     pointer.texcoordX = posX / canvas.width;
@@ -838,14 +838,12 @@
   }
 
   function correctDeltaX(delta) {
-    if (!canvas) return delta;
     let aspectRatio = canvas.width / canvas.height;
     if (aspectRatio < 1) delta *= aspectRatio;
     return delta;
   }
 
   function correctDeltaY(delta) {
-    if (!canvas) return delta;
     let aspectRatio = canvas.width / canvas.height;
     if (aspectRatio > 1) delta /= aspectRatio;
     return delta;
@@ -910,7 +908,6 @@
   }
 
   function getResolution(resolution) {
-    if (!gl) return { width: 0, height: 0 };
     let aspectRatio = gl.drawingBufferWidth / gl.drawingBufferHeight;
     if (aspectRatio < 1) aspectRatio = 1.0 / aspectRatio;
     const min = Math.round(resolution);
@@ -935,10 +932,8 @@
   }
 
   function updateFrame() {
-    if (config.PAUSED || !gl || !canvas) {
-      animationFrameId = null;
-      return;
-    }
+    // console.log('splash-cursor.js: updateFrame called.'); // Too frequent, uncomment if needed
+    if (config.PAUSED) return;
     const dt = calcDeltaTime();
     if (resizeCanvas()) initFramebuffers();
     updateColors(dt);
@@ -949,38 +944,21 @@
   }
 
   function startCursorEffect() {
-    console.log("startCursorEffect called. Current hash:", window.location.hash);
-    if (canvas === null) {
-      canvas = document.createElement('canvas');
-      canvas.id = 'fluid';
-      canvas.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 50;
-        pointer-events: none;
-        width: 100vw;
-        height: 100vh;
-        display: block;
-        opacity: 0;
-        transition: opacity 0.5s ease-in-out;
-      `;
-      document.body.appendChild(canvas);
-      console.log("Canvas created and appended.");
-    } else if (!document.body.contains(canvas)) { // Re-append if removed
-      document.body.appendChild(canvas);
-      console.log("Canvas re-appended.");
-    }
-
-    if (!gl) {
-      console.log("Initializing WebGL context...");
+    console.log('splash-cursor.js: startCursorEffect called.');
+    if (gl) { // If WebGL context already initialized
+      console.log('splash-cursor.js: WebGL context already initialized.');
+      config.PAUSED = false;
+      canvas.style.opacity = '1';
+      lastUpdateTime = Date.now(); // Reset timer for smooth start
+      animationFrameId = requestAnimationFrame(updateFrame);
+    } else { // First time initialization
+      console.log('splash-cursor.js: Initializing WebGL context.');
       const webglContext = getWebGLContext(canvas);
       gl = webglContext.gl;
       ext = webglContext.ext;
 
       if (!gl) {
-        console.error("Failed to get WebGL context. Cursor effect will not run.");
-        stopCursorEffect(); // Ensure it's stopped if context fails
+        console.error('splash-cursor.js: Failed to get WebGL context.');
         return;
       }
 
@@ -989,45 +967,27 @@
         config.SHADING = false;
       }
       initPrograms();
-      console.log("WebGL context and programs initialized.");
-    }
-
-    updateKeywords();
-    initFramebuffers();
-    config.PAUSED = false;
-    canvas.style.opacity = '1';
-    lastUpdateTime = Date.now();
-    if (!animationFrameId) {
-      console.log("Starting animation frame loop.");
+      updateKeywords();
+      initFramebuffers();
+      config.PAUSED = false;
+      canvas.style.opacity = '1';
+      lastUpdateTime = Date.now();
       animationFrameId = requestAnimationFrame(updateFrame);
-    } else {
-      console.log("Animation frame loop already running.");
     }
   }
 
   function stopCursorEffect() {
-    console.log("stopCursorEffect called. Current hash:", window.location.hash);
     config.PAUSED = true;
-    if (canvas) {
-      canvas.style.opacity = '0';
-    }
+    canvas.style.opacity = '0';
     if (animationFrameId) {
       cancelAnimationFrame(animationFrameId);
       animationFrameId = null;
-      console.log("Animation frame loop cancelled.");
-    }
-    if (canvas && canvas.parentNode) {
-      canvas.parentNode.removeChild(canvas);
-      canvas = null;
-      gl = null;
-      ext = null;
-      console.log("Canvas removed from DOM and contexts reset.");
     }
   }
 
   function handleHashChange() {
     const currentHash = window.location.hash;
-    console.log("Hash changed to:", currentHash);
+    console.log('splash-cursor.js: Hash changed to:', currentHash);
     if (currentHash === '' || currentHash === '#home') {
       startCursorEffect();
     } else {
@@ -1035,15 +995,16 @@
     }
   }
 
+  // Initial check and setup
   window.addEventListener('load', () => {
-    console.log("Window loaded.");
-    handleHashChange();
+    handleHashChange(); // Check on initial load
   });
 
   window.addEventListener('hashchange', handleHashChange);
 
+  // Event listeners for cursor interaction
   window.addEventListener('mousedown', e => {
-    if (config.PAUSED || !gl || !canvas) return;
+    if (config.PAUSED) return;
     let pointer = pointers[0];
     let posX = scaleByPixelRatio(e.clientX);
     let posY = scaleByPixelRatio(e.clientY);
@@ -1051,8 +1012,20 @@
     clickSplat(pointer);
   });
 
+  document.body.addEventListener('mousemove', function handleFirstMouseMove(e) {
+    if (config.PAUSED) return;
+    startCursorEffect(); // Ensure WebGL context is initialized
+    let pointer = pointers[0];
+    let posX = scaleByPixelRatio(e.clientX);
+    let posY = scaleByPixelRatio(e.clientY);
+    let color = generateColor();
+    updateFrame(); // Ensure frame updates on first move
+    updatePointerMoveData(pointer, posX, posY, color);
+    document.body.removeEventListener('mousemove', handleFirstMouseMove);
+  });
+
   window.addEventListener('mousemove', e => {
-    if (config.PAUSED || !gl || !canvas) return;
+    if (config.PAUSED) return;
     let pointer = pointers[0];
     let posX = scaleByPixelRatio(e.clientX);
     let posY = scaleByPixelRatio(e.clientY);
@@ -1060,8 +1033,22 @@
     updatePointerMoveData(pointer, posX, posY, color);
   });
 
+  document.body.addEventListener('touchstart', function handleFirstTouchStart(e) {
+    if (config.PAUSED) return;
+    startCursorEffect(); // Ensure WebGL context is initialized
+    const touches = e.targetTouches;
+    let pointer = pointers[0];
+    for (let i = 0; i < touches.length; i++) {
+      let posX = scaleByPixelRatio(touches[i].clientX);
+      let posY = scaleByPixelRatio(touches[i].clientY);
+      updateFrame(); // Ensure frame updates on first touch
+      updatePointerDownData(pointer, touches[i].identifier, posX, posY);
+    }
+    document.body.removeEventListener('touchstart', handleFirstTouchStart);
+  });
+
   window.addEventListener('touchstart', e => {
-    if (config.PAUSED || !gl || !canvas) return;
+    if (config.PAUSED) return;
     const touches = e.targetTouches;
     let pointer = pointers[0];
     for (let i = 0; i < touches.length; i++) {
@@ -1074,7 +1061,7 @@
   window.addEventListener(
     'touchmove',
     e => {
-      if (config.PAUSED || !gl || !canvas) return;
+      if (config.PAUSED) return;
       const touches = e.targetTouches;
       let pointer = pointers[0];
       for (let i = 0; i < touches.length; i++) {
@@ -1087,7 +1074,7 @@
   );
 
   window.addEventListener('touchend', e => {
-    if (config.PAUSED || !gl || !canvas) return;
+    if (config.PAUSED) return;
     const touches = e.changedTouches;
     let pointer = pointers[0];
     for (let i = 0; i < touches.length; i++) {
