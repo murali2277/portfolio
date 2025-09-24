@@ -338,7 +338,7 @@ function displayFallbackProjects() {
             name: "LAN_Auto_Install",
             description: "Automated LAN installation system for network devices and software deployment.",
             html_url: "https://github.com/murali2277/LAN_Auto_Install",
-            homepage: "",
+            homepage: "https://nova-net.netlify.app/",
             language: "Python",
             topics: ["Network Automation", "Deployment", "System Administration"],
             displayName: "novanet"
@@ -380,7 +380,7 @@ function displayFallbackProjects() {
             name: "travel_webpage",
             description: "A dynamic travel website showcasing various destinations, travel packages, and booking functionalities.",
             html_url: "https://github.com/murali2277/travel_webpage",
-            homepage: "https://travel-webpage-demo.vercel.app/",
+            homepage: "https://msktravels.onrender.com",
             language: "HTML",
             topics: ["Web Development", "Travel", "Frontend"],
             displayName: "Dynamic Travel Portal" // New display name
