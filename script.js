@@ -280,10 +280,11 @@ async function fetchGitHubProjects() {
         // Define the exact order of projects you want to display
         const projectOrder = [
             'LAN_Auto_Install',
-            'vulnerabality-scanner',
-            'Bus_Attendance_System',
-            'bus-live-tracking',
             '6-axis', // Keep original name for API fetch
+            'Bus_Attendance_System',
+            'vulnerabality-scanner',
+            'clyra',
+            'bus-live-tracking',
             'travel_webpage', // Keep original name for API fetch
             'ai-assistent-for-cyber-law',
             'EduQuiz',
@@ -344,12 +345,13 @@ function displayFallbackProjects() {
             displayName: "novanet"
         },
         {
-            name: "vulnerabality-scanner",
-            description: "Advanced vulnerability scanning tool designed to identify security weaknesses in web applications and networks.",
-            html_url: "https://github.com/murali2277/vulnerabality-scanner",
-            homepage: "https://vulnerabality-scanner-2.onrender.com/",
-            language: "Python", // Adding language for consistency if needed by getFilteredTechTags
-            topics: ["Security", "Scanner", "Cybersecurity"]
+            name: "6-axis",
+            description: "A project demonstrating control over a 6-axis robotic arm, focusing on precision movement and automation.",
+            html_url: "https://github.com/murali2277/6-axis",
+            homepage: "https://six-axis-frontend.onrender.com/",
+            language: "C++",
+            topics: ["Robotics", "Automation", "Control Systems"],
+            displayName: "Robotic Arm Control System" // New display name
         },
         {
             name: "Bus_Attendance_System",
@@ -360,21 +362,28 @@ function displayFallbackProjects() {
             topics: ["Automation", "Python", "System"]
         },
         {
+            name: "vulnerabality-scanner",
+            description: "Advanced vulnerability scanning tool designed to identify security weaknesses in web applications and networks.",
+            html_url: "https://github.com/murali2277/vulnerabality-scanner",
+            homepage: "https://vulnerabality-scanner-2.onrender.com/",
+            language: "Python", // Adding language for consistency if needed by getFilteredTechTags
+            topics: ["Security", "Scanner", "Cybersecurity"]
+        },
+        {
+            name: "clyra",
+            description: "CLyra uses WebRTC for direct peer-to-peer communication, ensuring your conversations are secure and low-latency. The backend is a lightweight Node.js signaling server, and the frontend is a snappy React app.",
+            html_url: "https://github.com/murali2277/clyra",
+            homepage: "https://clyra-eta.vercel.app/",
+            language: "JavaScript",
+            topics: ["WebRTC", "React", "Node.js", "Peer-to-Peer"]
+        },
+        {
             name: "bus-live-tracking",
             description: "Real-time bus tracking system with GPS integration for monitoring public transportation routes and schedules.",
             html_url: "https://github.com/murali2277/bus-live-tracking",
             homepage: "https://bus-live-tracking.vercel.app/",
             language: "Python",
             topics: ["GPS", "Real-time", "Tracking"]
-        },
-        {
-            name: "6-axis",
-            description: "A project demonstrating control over a 6-axis robotic arm, focusing on precision movement and automation.",
-            html_url: "https://github.com/murali2277/6-axis",
-            homepage: "https://six-axis-frontend.onrender.com/",
-            language: "C++",
-            topics: ["Robotics", "Automation", "Control Systems"],
-            displayName: "Robotic Arm Control System" // New display name
         },
         {
             name: "travel_webpage",
@@ -416,7 +425,8 @@ function formatProjectName(name) {
     const customNames = {
         '6-axis': 'Robotic Arm Control System',
         'travel_webpage': 'Dynamic Travel Portal',
-        'lan_auto_install': 'NovaNet'
+        'lan_auto_install': 'NovaNet',
+        'clyra': 'Clyra',
     };
     if (customNames[name.toLowerCase()]) {
         return customNames[name.toLowerCase()];
@@ -445,6 +455,7 @@ function getProjectSpecificTags(projectName) {
         'vulnerabality-scanner': ['Security', 'Scanner', 'Cybersecurity'],
         'bus_attendance_system': ['Automation', 'Python', 'System'],
         'bus-live-tracking': ['GPS', 'Real-time', 'Tracking'],
+        'clyra': ['WebRTC', 'React', 'Node.js'],
         '6-axis': ['Robotics', 'Automation', 'Control Systems'],
         'travel_webpage': ['Web Development', 'Travel', 'Frontend'],
         'ai-assistent-for-cyber-law': ['AI', 'Legal Tech', 'Assistant'],
