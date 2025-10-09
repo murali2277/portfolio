@@ -371,7 +371,7 @@ function displayFallbackProjects() {
         },
         {
             name: "clyra",
-            description: "CLyra uses WebRTC for direct peer-to-peer communication, ensuring your conversations are secure and low-latency. The backend is a lightweight Node.js signaling server, and the frontend is a snappy React app.",
+            description: "CLyra is a secure, low-latency WebRTC peer-to-peer communication app with a Node.js backend and a React frontend.",
             html_url: "https://github.com/murali2277/clyra",
             homepage: "https://clyra-eta.vercel.app/",
             language: "JavaScript",
