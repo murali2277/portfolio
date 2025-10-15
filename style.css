@@ -15,6 +15,24 @@
     --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
 
+/* Loading Screen Styles */
+#loading-screen {
+    opacity: 1;
+    transition: opacity 1s ease-out;
+}
+
+#particle-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.loading-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
 /* Reset and Base Styles */
 * {
     margin: 0;
@@ -28,10 +46,13 @@ html {
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--dark-bg);
+    background: var(--dark-bg); /* Default background, will be covered by loading screen */
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    /* Ensure body doesn't have a default margin/padding that could expose white space */
+    margin: 0;
+    padding: 0;
 }
 
 .container {

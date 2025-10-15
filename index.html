@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="overflow: hidden;">
 <head>
   <!-- Basic Meta Tags -->
   <meta charset="UTF-8">
@@ -184,10 +184,16 @@
 
 
 <body>
+  <div id="loading-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: black; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999;">
+    <canvas id="particle-canvas"></canvas>
+    <!-- <div class="loading-text" style="color: white; font-size: 1.5em; margin-top: 20px;">Loading...</div> -->
+  </div>
+
+  <div id="main-content" style="display: none;">
     <!-- Network background -->
 <canvas id="network-bg"></canvas>
     <!-- Navigation Bar -->
-    <nav class="navbar" id="navbar">
+<nav class="navbar" id="navbar">
         <div class="nav-container">
             <div class="nav-logo">
                 <span class="logo-text">MK</span>
@@ -432,6 +438,6 @@
     </footer>
 
     <script src="script.js"></script>
-    <script src="splash-cursor.js"></script>
+  </div>
 </body>
 </html>
