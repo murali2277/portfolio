@@ -1,3 +1,7 @@
+import { initSplitterNow } from './splitter.js';
+
+console.log('Script.js loaded');
+
 class TypeWriter {
     constructor(txtElement, words, wait = 3000) {
         this.txtElement = txtElement;
@@ -318,6 +322,7 @@ const ParticleTextEffect = (canvasId, words = ["Hi","It'z Me MK"]) => {
   };
 
   const init = (callback) => {
+    console.log("ParticleTextEffect init called. Canvas ID:", canvasId, "Canvas element:", canvas);
     canvas.width = 1000;
     canvas.height = 500;
     animationCompleteCallback = callback;
@@ -343,32 +348,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let particleEffectInstance;
 
-    if (particleCanvas) {
-        particleEffectInstance = ParticleTextEffect('particle-canvas');
-        particleEffectInstance.init(() => {
-            // This callback runs when the particle animation sequence is complete
-            if (loadingScreen) {
-                loadingScreen.style.opacity = '0';
-                loadingScreen.style.transition = 'opacity 1s ease-out';
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                    if (mainContent) {
-                        mainContent.style.display = 'block';
-                        mainContent.style.opacity = '0';
+    const showMainContent = () => {
+        console.log("showMainContent called, attempting to display main content.");
+        if (loadingScreen) {
+            loadingScreen.style.opacity = '0';
+            loadingScreen.style.transition = 'opacity 1s ease-out';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                if (mainContent) {
+                    mainContent.style.display = 'block';
+                    mainContent.style.opacity = '0';
                         mainContent.style.transition = 'opacity 1s ease-in';
                         setTimeout(() => {
                             mainContent.style.opacity = '1';
                             document.documentElement.style.overflow = ''; // Re-enable scrolling
+                            console.log("Calling initSplitterNow from showMainContent.");
+                            initSplitterNow(); // This is now handled by splitter.js itself
+                            console.log("Main content displayed.");
                         }, 50); // Small delay to ensure display:block takes effect before transition
-                    }
-                }, 1000); // Matches loadingScreen transition duration
-            }
-        });
+                }
+            }, 1000); // Matches loadingScreen transition duration
+        }
+    };
+
+    if (particleCanvas) {
+        console.log("particleCanvas element found:", particleCanvas);
+        particleEffectInstance = ParticleTextEffect('particle-canvas');
+        particleEffectInstance.init(showMainContent);
     } else {
+        console.log("particleCanvas element NOT found.");
         // If no particle canvas, just show main content
-        if (loadingScreen) loadingScreen.style.display = 'none';
-        if (mainContent) mainContent.style.display = 'block';
-        document.documentElement.style.overflow = ''; // Re-enable scrolling
+  if (loadingScreen) loadingScreen.style.display = 'none';
+  if (mainContent) mainContent.style.display = 'block';
+  document.documentElement.style.overflow = ''; // Re-enable scrolling
     }
 
 
