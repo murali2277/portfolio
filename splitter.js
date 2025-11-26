@@ -42,9 +42,9 @@ const getRect = ($c, i) => (rects[i] = $c.getBoundingClientRect());
 export function initSplitterNow() {
   // The paragraph in the HTML has id 'about-me'
   const aboutMeParagraph = document.querySelector("#about-me");
-  aboutMeParagraph.style.textAlign = "center";
-  aboutMeParagraph.style.margin = "0 auto";
-  aboutMeParagraph.style.display = "inline-block";
+  // aboutMeParagraph.style.textAlign = "center"; // Commented out to prevent inline style override
+  // aboutMeParagraph.style.margin = "0 auto"; // Commented out to prevent inline style override
+  // aboutMeParagraph.style.display = "inline-block"; // Commented out to prevent inline style override
   if (!aboutMeParagraph) {
     console.error("Splitter Target: About me paragraph not found!");
     return false;

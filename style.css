@@ -386,7 +386,6 @@ body {
 .about-content {
     max-width: 800px;
     margin: 0 auto;
-    text-align: center; /* Keep this for text alignment */
     display: flex; /* Use flexbox to center content */
     flex-direction: column; /* Stack children vertically */
     align-items: center; /* Center items horizontally in the flex container */
@@ -397,8 +396,10 @@ body {
     color: var(--text-secondary);
     margin-bottom: 3rem;
     line-height: 1.8;
-    text-align: left; /* Change from center to left for readability */
+    text-align: center; /* Center text for better alignment */
     width: 100%; /* Ensure it takes full width to allow text-align to work */
+    word-wrap: break-word; /* Ensure long words break */
+    overflow-wrap: break-word; /* Ensure long words break */
 }
 
 .goals h3 {
@@ -1208,10 +1209,4 @@ body {
 .hero-socials a:hover {
     color: var(--primary-color);
     transform: translateY(-3px); /* Lifts the icon slightly on hover */
-}
-
-#about-me {
-  text-align: center;
-  margin: 0 auto;
-  display: inline-block; /* optional: helps with inline layout */
 }
