@@ -650,16 +650,22 @@ function displayProjects(projects) {
     
     projectsGrid.innerHTML = projects.map(project => `
         <div class="project-card">
-            <h3 class="project-title">${formatProjectName(project.name)}</h3>
-            <p class="project-description">${project.description || getDefaultDescription(project.name)}</p>
-            <div class="project-tech">${getProjectSpecificTags(project.name).map(tag => `<span class="tech-tag">${tag}</span>`).join('')}</div>
-            <div class="project-links">
-                <a href="${project.html_url}" target="_blank" class="project-link">
-                    <i class="fab fa-github"></i> View Code
-                </a>
-                ${project.homepage ? `<a href="${project.homepage}" target="_blank" class="project-link">
-                    <i class="fas fa-external-link-alt"></i> Live Demo
-                </a>` : ''}
+            <div class="project-image-wrapper">
+                <img src="${getProjectImage(project.name)}" alt="${formatProjectName(project.name)}" class="project-image" loading="lazy" onerror="this.style.display='none'">
+                <div class="project-image-overlay"></div>
+            </div>
+            <div class="project-content">
+                <h3 class="project-title">${formatProjectName(project.name)}</h3>
+                <p class="project-description">${project.description || getDefaultDescription(project.name)}</p>
+                <div class="project-tech">${getProjectSpecificTags(project.name).map(tag => `<span class="tech-tag">${tag}</span>`).join('')}</div>
+                <div class="project-links">
+                    <a href="${project.html_url}" target="_blank" class="project-link">
+                        <i class="fab fa-github"></i> View Code
+                    </a>
+                    ${project.homepage ? `<a href="${project.homepage}" target="_blank" class="project-link">
+                        <i class="fas fa-external-link-alt"></i> Live Demo
+                    </a>` : ''}
+                </div>
             </div>
         </div>
     `).join('');
@@ -753,6 +759,22 @@ function displayFallbackProjects() {
     displayProjects(fallbackProjects);
 }
 
+// Get project image based on project name
+function getProjectImage(projectName) {
+    const imageMap = {
+        'lan_auto_install': 'assets/novanet.png',
+        '6-axis': 'assets/six-axis-robot.png',
+        'bus_attendance_system': 'assets/bus-attendance.png',
+        'vulnerabality-scanner': 'assets/vscan.png',
+        'clyra': 'assets/clyra.png',
+        'bus-live-tracking': 'assets/bus-livetracking.png',
+        'travel_webpage': 'assets/travel-webpage.png',
+        'ai-assistent-for-cyber-law': 'assets/logo.png',
+        'eduquiz': 'assets/quiz.png',
+        'portfolio': 'assets/portfolio.png'
+    };
+    return imageMap[projectName.toLowerCase()] || 'assets/logo.png';
+}
 
 function formatProjectName(name) {
     // Check for a custom display name first
@@ -841,7 +863,7 @@ function initHorizontalScroll() {
                 invalidateOnRefresh: true,
                 snap: {
                     snapTo: 1, // Snap to end when scroll completes
-                    duration: 0.3,
+                    duration: 3,
                     ease: 'power1.inOut'
                 }
             }
