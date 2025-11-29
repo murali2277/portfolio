@@ -400,6 +400,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations(); // General elements animating on scroll
     initNetworkBackground(); // Canvas background animation
     initButtonRipples(); // Button click effects
+    initCardGlowEffect(); // Mouse-tracking glow effect for project cards
+    initSkillCardGlowEffect(); // Mouse-tracking glow effect for skill categories
+    initContactCardGlowEffect(); // Mouse-tracking glow effect for contact cards
+    initStatsCardGlowEffect(); // Mouse-tracking glow effect for stats cards
 
     // Close mobile menu on outside click
     document.addEventListener('click', function(e) {
@@ -604,6 +608,227 @@ function initButtonRipples() {
     });
 }
 
+// --- MOUSE-TRACKING GLOW EFFECT FOR PROJECT CARDS ---
+function initCardGlowEffect() {
+    const projectsGrid = document.getElementById('projectsGrid');
+    if (!projectsGrid) return;
+
+    // Use event delegation for dynamically loaded cards
+    projectsGrid.addEventListener('mousemove', handleCardGlow);
+    projectsGrid.addEventListener('mouseleave', handleCardGlowLeave);
+}
+
+function handleCardGlow(e) {
+    const cards = document.querySelectorAll('.project-card-wrapper');
+    
+    cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // Calculate distance from mouse to card center
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const distance = Math.sqrt(
+            Math.pow(e.clientX - (rect.left + centerX), 2) + 
+            Math.pow(e.clientY - (rect.top + centerY), 2)
+        );
+        
+        // Proximity threshold - how close the mouse needs to be to affect the card
+        const maxDistance = 400;
+        
+        if (distance < maxDistance) {
+            // Calculate opacity based on distance (closer = more visible)
+            const opacity = Math.max(0, 1 - (distance / maxDistance));
+            
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+            card.style.setProperty('--glow-opacity', opacity);
+        } else {
+            card.style.setProperty('--glow-opacity', 0);
+        }
+    });
+}
+
+function handleCardGlowLeave() {
+    const cards = document.querySelectorAll('.project-card-wrapper');
+    cards.forEach(card => {
+        card.style.setProperty('--glow-opacity', 0);
+    });
+}
+
+// --- MOUSE-TRACKING GLOW EFFECT FOR SKILL CATEGORIES ---
+function initSkillCardGlowEffect() {
+    const skillsGrid = document.querySelector('.skills-grid');
+    if (!skillsGrid) return;
+
+    // Wrap skill categories with wrapper elements for glow effect
+    const skillCategories = skillsGrid.querySelectorAll('.skill-category');
+    skillCategories.forEach(category => {
+        if (!category.parentElement.classList.contains('skill-category-wrapper')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'skill-category-wrapper';
+            category.parentNode.insertBefore(wrapper, category);
+            wrapper.appendChild(category);
+        }
+    });
+
+    // Use event delegation for glow effect
+    skillsGrid.addEventListener('mousemove', handleSkillCardGlow);
+    skillsGrid.addEventListener('mouseleave', handleSkillCardGlowLeave);
+}
+
+function handleSkillCardGlow(e) {
+    const cards = document.querySelectorAll('.skill-category-wrapper');
+    
+    cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // Calculate distance from mouse to card center
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const distance = Math.sqrt(
+            Math.pow(e.clientX - (rect.left + centerX), 2) + 
+            Math.pow(e.clientY - (rect.top + centerY), 2)
+        );
+        
+        // Proximity threshold - how close the mouse needs to be to affect the card
+        const maxDistance = 350;
+        
+        if (distance < maxDistance) {
+            // Calculate opacity based on distance (closer = more visible)
+            const opacity = Math.max(0, 1 - (distance / maxDistance));
+            
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+            card.style.setProperty('--glow-opacity', opacity);
+        } else {
+            card.style.setProperty('--glow-opacity', 0);
+        }
+    });
+}
+
+function handleSkillCardGlowLeave() {
+    const cards = document.querySelectorAll('.skill-category-wrapper');
+    cards.forEach(card => {
+        card.style.setProperty('--glow-opacity', 0);
+    });
+}
+
+// --- MOUSE-TRACKING GLOW EFFECT FOR CONTACT CARDS ---
+function initContactCardGlowEffect() {
+    const contactGrid = document.querySelector('.contact-grid');
+    if (!contactGrid) return;
+
+    // Wrap contact cards with wrapper elements for glow effect
+    const contactCards = contactGrid.querySelectorAll('.contact-card');
+    contactCards.forEach(card => {
+        if (!card.parentElement.classList.contains('contact-card-wrapper')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'contact-card-wrapper';
+            card.parentNode.insertBefore(wrapper, card);
+            wrapper.appendChild(card);
+        }
+    });
+
+    // Use event delegation for glow effect
+    contactGrid.addEventListener('mousemove', handleContactCardGlow);
+    contactGrid.addEventListener('mouseleave', handleContactCardGlowLeave);
+}
+
+function handleContactCardGlow(e) {
+    const cards = document.querySelectorAll('.contact-card-wrapper');
+    
+    cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const distance = Math.sqrt(
+            Math.pow(e.clientX - (rect.left + centerX), 2) + 
+            Math.pow(e.clientY - (rect.top + centerY), 2)
+        );
+        
+        const maxDistance = 350;
+        
+        if (distance < maxDistance) {
+            const opacity = Math.max(0, 1 - (distance / maxDistance));
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+            card.style.setProperty('--glow-opacity', opacity);
+        } else {
+            card.style.setProperty('--glow-opacity', 0);
+        }
+    });
+}
+
+function handleContactCardGlowLeave() {
+    const cards = document.querySelectorAll('.contact-card-wrapper');
+    cards.forEach(card => {
+        card.style.setProperty('--glow-opacity', 0);
+    });
+}
+
+// --- MOUSE-TRACKING GLOW EFFECT FOR STATS CARDS ---
+function initStatsCardGlowEffect() {
+    const statsGrid = document.querySelector('.stats-grid');
+    if (!statsGrid) return;
+
+    // Wrap stats cards with wrapper elements for glow effect
+    const statsCards = statsGrid.querySelectorAll('.stats-card');
+    statsCards.forEach(card => {
+        if (!card.parentElement.classList.contains('stats-card-wrapper')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'stats-card-wrapper';
+            card.parentNode.insertBefore(wrapper, card);
+            wrapper.appendChild(card);
+        }
+    });
+
+    // Use event delegation for glow effect
+    statsGrid.addEventListener('mousemove', handleStatsCardGlow);
+    statsGrid.addEventListener('mouseleave', handleStatsCardGlowLeave);
+}
+
+function handleStatsCardGlow(e) {
+    const cards = document.querySelectorAll('.stats-card-wrapper');
+    
+    cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const distance = Math.sqrt(
+            Math.pow(e.clientX - (rect.left + centerX), 2) + 
+            Math.pow(e.clientY - (rect.top + centerY), 2)
+        );
+        
+        const maxDistance = 400;
+        
+        if (distance < maxDistance) {
+            const opacity = Math.max(0, 1 - (distance / maxDistance));
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+            card.style.setProperty('--glow-opacity', opacity);
+        } else {
+            card.style.setProperty('--glow-opacity', 0);
+        }
+    });
+}
+
+function handleStatsCardGlowLeave() {
+    const cards = document.querySelectorAll('.stats-card-wrapper');
+    cards.forEach(card => {
+        card.style.setProperty('--glow-opacity', 0);
+    });
+}
+
 // --- PROJECT FETCHING LOGIC ---
 async function fetchGitHubProjects() {
     try {
@@ -649,22 +874,24 @@ function displayProjects(projects) {
     }
     
     projectsGrid.innerHTML = projects.map(project => `
-        <div class="project-card">
-            <div class="project-image-wrapper">
-                <img src="${getProjectImage(project.name)}" alt="${formatProjectName(project.name)}" class="project-image" loading="lazy" onerror="this.style.display='none'">
-                <div class="project-image-overlay"></div>
-            </div>
-            <div class="project-content">
-                <h3 class="project-title">${formatProjectName(project.name)}</h3>
-                <p class="project-description">${project.description || getDefaultDescription(project.name)}</p>
-                <div class="project-tech">${getProjectSpecificTags(project.name).map(tag => `<span class="tech-tag">${tag}</span>`).join('')}</div>
-                <div class="project-links">
-                    <a href="${project.html_url}" target="_blank" class="project-link">
-                        <i class="fab fa-github"></i> View Code
-                    </a>
-                    ${project.homepage ? `<a href="${project.homepage}" target="_blank" class="project-link">
-                        <i class="fas fa-external-link-alt"></i> Live Demo
-                    </a>` : ''}
+        <div class="project-card-wrapper">
+            <div class="project-card">
+                <div class="project-image-wrapper">
+                    <img src="${getProjectImage(project.name)}" alt="${formatProjectName(project.name)}" class="project-image" loading="lazy" onerror="this.style.display='none'">
+                    <div class="project-image-overlay"></div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">${formatProjectName(project.name)}</h3>
+                    <p class="project-description">${project.description || getDefaultDescription(project.name)}</p>
+                    <div class="project-tech">${getProjectSpecificTags(project.name).map(tag => `<span class="tech-tag">${tag}</span>`).join('')}</div>
+                    <div class="project-links">
+                        <a href="${project.html_url}" target="_blank" class="project-link">
+                            <i class="fab fa-github"></i> View Code
+                        </a>
+                        ${project.homepage ? `<a href="${project.homepage}" target="_blank" class="project-link">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>` : ''}
+                    </div>
                 </div>
             </div>
         </div>

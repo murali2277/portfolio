@@ -7,7 +7,7 @@
     --text-secondary: #b3b3b3;
     --text-muted: #888888;
     --dark-bg: #0a0a0a;
-    --card-bg: rgba(255, 255, 255, 0.05);
+    --card-bg: rgba(255, 255, 255, 0.02);
     --border-color: rgba(255, 255, 255, 0.1);
     --shadow: rgba(0, 0, 0, 0.3);
     --gradient-1: linear-gradient(135deg, #667eeab2 0%, #764ba2 100%);
@@ -456,25 +456,83 @@ body {
     will-change: transform;
 }
 
-.project-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 0;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
+.project-card-wrapper {
+    position: relative;
     min-width: 350px;
     width: 350px;
     flex-shrink: 0;
+    border-radius: 20px;
+    padding: 2px;
+    background: var(--card-bg);
+    transition: background 0.3s ease;
+}
+
+/* Glowing border that follows mouse position */
+.project-card-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    padding: 2px;
+    background: radial-gradient(
+        800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        #00ff88 0%,
+        rgba(0, 255, 136, 0.8) 10%,
+        rgba(0, 255, 136, 0.5) 30%,
+        rgba(0, 255, 136, 0.2) 50%,
+        transparent 70%
+    );
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: var(--glow-opacity, 0);
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
+/* Soft glow spread effect - reduced intensity */
+.project-card-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 22px;
+    background: radial-gradient(
+        500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(0, 255, 136, 0.15),
+        rgba(0, 255, 136, 0.08) 30%,
+        rgba(0, 255, 136, 0.03) 50%,
+        transparent 70%
+    );
+    filter: blur(6px);
+    opacity: var(--glow-opacity, 0);
+    transition: opacity 0.2s ease;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.project-card {
+    /* background: var(--dark-bg); */
+    background: var(--card-bg);
+    border: none;
+    border-radius: 18px;
+    padding: 0;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    height: 100%;
+    position: relative;
+    z-index: 1;
 }
 
 .project-card:hover {
-    box-shadow: 0 20px 40px var(--shadow);
-    border-color: var(--primary-color);
-    transform: translateY(-5px);
+    /* Card stays in place - glow effect handles the visual feedback */
 }
 
 /* Project Image Styles */
@@ -612,20 +670,60 @@ body {
     gap: 2rem;
 }
 
+/* Skill Category Wrapper with Glowing Border Effect */
+.skill-category-wrapper {
+    position: relative;
+    border-radius: 18px;
+    padding: 2px;
+    background: var(--card-bg);
+    transition: background 0.3s ease;
+    display: flex;
+}
+
+/* Glowing border that follows mouse position */
+.skill-category-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    padding: 2px;
+    background: radial-gradient(
+        600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        #00ff88 0%,
+        rgba(0, 255, 136, 0.8) 10%,
+        rgba(0, 255, 136, 0.5) 30%,
+        rgba(0, 255, 136, 0.2) 50%,
+        transparent 70%
+    );
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: var(--glow-opacity, 0);
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
 .skill-category {
     background: var(--card-bg);
-    border: 1px solid var(--border-color);
+    border: none;
     border-radius: 16px;
     padding: 2rem;
     text-align: center;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
 }
 
 .skill-category:hover {
-    transform: translateY(-5px);
-    border-color: var(--primary-color);
-    box-shadow: 0 10px 30px var(--shadow);
+    /* Glow effect handles visual feedback */
 }   
 
 .skill-category h3 {
@@ -696,9 +794,47 @@ body {
     margin: 0 auto;
 }
 
+/* Contact Card Wrapper with Glowing Border Effect */
+.contact-card-wrapper {
+    position: relative;
+    border-radius: 18px;
+    padding: 2px;
+    background: var(--card-bg);
+    transition: background 0.3s ease;
+    display: flex;
+}
+
+/* Glowing border that follows mouse position */
+.contact-card-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    padding: 2px;
+    background: radial-gradient(
+        600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        #00ff88 0%,
+        rgba(0, 255, 136, 0.8) 10%,
+        rgba(0, 255, 136, 0.5) 30%,
+        rgba(0, 255, 136, 0.2) 50%,
+        transparent 70%
+    );
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: var(--glow-opacity, 0);
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
 .contact-card {
     background: var(--card-bg);
-    border: 1px solid var(--border-color);
+    border: none;
     border-radius: 16px;
     padding: 2rem;
     text-decoration: none;
@@ -708,12 +844,15 @@ body {
     align-items: center;
     gap: 1.5rem;
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
 }
 
 .contact-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--primary-color);
-    box-shadow: 0 10px 30px var(--shadow);
+    /* Glow effect handles visual feedback */
 }
 
 .contact-icon {
@@ -844,9 +983,9 @@ body {
         gap: 1.5rem;
     }
     
-    .project-card {
+    .project-card-wrapper {
         min-width: 320px;
-        max-width: 320px;
+        width: 320px;
     }
     
     .project-image-wrapper {
@@ -1072,11 +1211,50 @@ body {
     margin: 0 auto;
 }
 
+/* Stats Card Wrapper with Glowing Border Effect */
+.stats-card-wrapper {
+    position: relative;
+    border-radius: 18px;
+    padding: 2px;
+    background: var(--card-bg);
+    transition: background 0.3s ease;
+    display: flex;
+}
+
+/* Glowing border that follows mouse position */
+.stats-card-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    padding: 2px;
+    background: radial-gradient(
+        600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        #00ff88 0%,
+        rgba(0, 255, 136, 0.8) 10%,
+        rgba(0, 255, 136, 0.5) 30%,
+        rgba(0, 255, 136, 0.2) 50%,
+        transparent 70%
+    );
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: var(--glow-opacity, 0);
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
 /* UPDATED STATS CARD STYLES */
 .stats-card {
-    background: var(--card-bg); /* Applies the new transparent blue background */
-    backdrop-filter: blur(10px); /* Keeps the frosted glass effect */
-    border: 1px solid var(--border-color); /* Applies the new matching border color */
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: none;
     border-radius: 16px;
     padding: 1.5rem;
     transition: all 0.3s ease;
@@ -1085,13 +1263,13 @@ body {
     justify-content: center;
     text-decoration: none;
     height: 100%;
+    position: relative;
+    z-index: 1;
+    width: 100%;
 }
 
 .stats-card:hover {
-    transform: translateY(-5px);
-    /* The border now glows with the primary green on hover for a nice effect */
-    border-color: var(--primary-color);
-    box-shadow: 0 10px 30px var(--shadow);
+    /* Glow effect handles visual feedback */
 }
 
 .stats-card img {
