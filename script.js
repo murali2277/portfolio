@@ -364,6 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             document.documentElement.style.overflow = ''; // Re-enable scrolling
                             console.log("Calling initSplitterNow from showMainContent.");
                             initSplitterNow(); // This is now handled by splitter.js itself
+                            initHorizontalScroll(); // Initialize horizontal scroll AFTER content is visible
                             console.log("Main content displayed.");
                         }, 50); // Small delay to ensure display:block takes effect before transition
                 }
@@ -378,9 +379,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.log("particleCanvas element NOT found.");
         // If no particle canvas, just show main content
-  if (loadingScreen) loadingScreen.style.display = 'none';
-  if (mainContent) mainContent.style.display = 'block';
-  document.documentElement.style.overflow = ''; // Re-enable scrolling
+        if (loadingScreen) loadingScreen.style.display = 'none';
+        if (mainContent) mainContent.style.display = 'block';
+        document.documentElement.style.overflow = ''; // Re-enable scrolling
+        showMainContent();
     }
 
 
@@ -661,6 +663,7 @@ function displayProjects(projects) {
             </div>
         </div>
     `).join('');
+    
 }
 
 // Fallback projects with live links
@@ -686,15 +689,15 @@ function displayFallbackProjects() {
         },
         {
             name: "Bus_Attendance_System",
-            description: "An automated attendance system for buses, leveraging technology to efficiently track passenger or student presence.",
+            description: "An automated attendance system for buses, leveraging technology to efficiently track student presence.",
             html_url: "https://github.com/murali2277/Bus_Attendance_System",
             homepage: "https://bus-attendance-system.vercel.app/",
             language: "Python",
-            topics: ["Automation", "Python", "System"]
+            topics: ["Automation", "Python", "System","IoT"]
         },
         {
             name: "vulnerabality-scanner",
-            description: "Advanced vulnerability scanning tool designed to identify security weaknesses in web applications and networks.",
+            description: "Advanced vulnerability scanning tool designed to identify security weaknesses in web applications.",
             html_url: "https://github.com/murali2277/vulnerabality-scanner",
             homepage: "https://vulnerabality-scanner-2.onrender.com/",
             language: "Python", // Adding language for consistency if needed by getFilteredTechTags
@@ -706,7 +709,7 @@ function displayFallbackProjects() {
             html_url: "https://github.com/murali2277/clyra",
             homepage: "https://clyra-eta.vercel.app/",
             language: "JavaScript",
-            topics: ["WebRTC", "React", "Node.js", "Peer-to-Peer"]
+            topics: ["WebRTC", "React", "Node.js", "Peer-to-Peer","Express"]
         },
         {
             name: "bus-live-tracking",
@@ -714,7 +717,7 @@ function displayFallbackProjects() {
             html_url: "https://github.com/murali2277/bus-live-tracking",
             homepage: "https://bus-live-tracking.vercel.app/",
             language: "Python",
-            topics: ["GPS", "Real-time", "Tracking"]
+            topics: ["GPS", "Real-time", "Tracking","Leaflet"]
         },
         {
             name: "travel_webpage",
@@ -730,7 +733,7 @@ function displayFallbackProjects() {
             description: "AI-powered assistant specialized in cyber law consultation and legal guidance for cybersecurity matters.",
             html_url: "https://github.com/murali2277/ai-assistent-for-cyber-law",
             language: "Python",
-            topics: ["AI", "Legal Tech", "Assistant"]
+            topics: ["AI", "Legal Tech", "Assistant","Cyber Law"]
         },
         {
             name: "EduQuiz",
@@ -744,7 +747,7 @@ function displayFallbackProjects() {
             description: "The source code for this portfolio website, built with modern HTML, CSS, and dynamic JavaScript to showcase my projects and skills.",
             html_url: "https://github.com/murali2277/portfolio",
             language: "JavaScript",
-            topics: ["Portfolio", "JavaScript','React.js','Node.js", "Frontend"]
+            topics: ["Portfolio", "JavaScript", "React.js", "Node.js", "Frontend"]
         }
     ];
     displayProjects(fallbackProjects);
@@ -780,18 +783,88 @@ function getDefaultDescription(projectName) {
     return descriptionMap[projectName.toLowerCase()] || 'A comprehensive project showcasing modern development practices.';
 }
 
+// GSAP Horizontal Scroll Animation for Projects
+function initHorizontalScroll() {
+    const waitForGSAP = () => {
+        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+            console.log('Waiting for GSAP...');
+            setTimeout(waitForGSAP, 100);
+            return;
+        }
+        
+        gsap.registerPlugin(ScrollTrigger);
+        
+        const projectsSection = document.querySelector('.projects-section');
+        const projectsGrid = document.querySelector('.projects-grid');
+        
+        if (!projectsSection || !projectsGrid) {
+            console.warn('Projects elements not found');
+            return;
+        }
+
+        // Kill any existing ScrollTriggers to prevent duplicates
+        ScrollTrigger.getAll().forEach(st => st.kill());
+
+        const cards = gsap.utils.toArray('.project-card');
+        if (cards.length === 0) {
+            console.warn('No project cards found');
+            return;
+        }
+
+        // Calculate dimensions
+        const totalWidth = projectsGrid.scrollWidth;
+        const containerWidth = projectsSection.offsetWidth;
+        
+        // End position - ensure last project is fully visible with padding
+        const endOffset = -(totalWidth - containerWidth + 100);
+        
+        // Total scroll distance for smooth scrolling
+        const scrollDistance = Math.abs(endOffset);
+
+        console.log('Horizontal scroll setup:', { totalWidth, containerWidth, endOffset, scrollDistance });
+
+        // Start from left (first projects visible)
+        gsap.set(projectsGrid, { x: 0 });
+
+        // Create smooth horizontal scroll animation
+        gsap.to(projectsGrid, {
+            x: endOffset,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: projectsSection,
+                start: 'top top',
+                end: () => `+=${scrollDistance}`,
+                scrub: 0.5, // Smoother scrub value
+                pin: true,
+                pinSpacing: true,
+                anticipatePin: 1,
+                invalidateOnRefresh: true,
+                snap: {
+                    snapTo: 1, // Snap to end when scroll completes
+                    duration: 0.3,
+                    ease: 'power1.inOut'
+                }
+            }
+        });
+
+        ScrollTrigger.refresh();
+        console.log('Horizontal scroll initialized with smooth finish');
+    };
+    
+    setTimeout(waitForGSAP, 300);
+}
 function getProjectSpecificTags(projectName) {
     const tagMap = {
         'lan_auto_install': ['Network Automation', 'Deployment', 'System Administration'],
         'vulnerabality-scanner': ['Security', 'Scanner', 'Cybersecurity'],
-        'bus_attendance_system': ['Automation', 'Python', 'System'],
+        'bus_attendance_system': ['Automation', 'Python', 'System', 'IoT'],
         'bus-live-tracking': ['GPS', 'Real-time', 'Tracking'],
-        'clyra': ['WebRTC', 'React', 'Node.js'],
+        'clyra': ['WebRTC', 'React', 'Node.js', 'Peer-to-Peer', 'Express'],
         '6-axis': ['Robotics', 'Automation', 'Control Systems'],
         'travel_webpage': ['Web Development', 'Travel', 'Frontend'],
-        'ai-assistent-for-cyber-law': ['AI', 'Legal Tech', 'Assistant'],
-        'eduquiz': ['Education', 'Quiz', 'Web App'],
-        'portfolio': ['Portfolio', 'JavaScript','Frontend']
+        'ai-assistent-for-cyber-law': ['AI', 'Legal Tech', 'Assistant', 'Cyber Law'],
+        'eduquiz': ['Education', 'Quiz', 'E-Learning'],
+        'portfolio': ['Portfolio', 'JavaScript', 'React.js', 'Node.js', 'Frontend']
     };
     // Prioritize specific tags, otherwise use generic for languages or topics
     return tagMap[projectName.toLowerCase()] || []; // Ensure it returns an array
