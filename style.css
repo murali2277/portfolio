@@ -50,6 +50,7 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    overscroll-behavior: none;
     /* Ensure body doesn't have a default margin/padding that could expose white space */
     margin: 0;
     padding: 0;
@@ -434,19 +435,35 @@ body {
 .projects-section {
     position: relative;
     overflow: hidden;
-    /* background: var(--dark-bg); */
     padding: 80px 0;
+    overscroll-behavior: none;
+    min-height: 100vh;
 }
 
 .projects-section .container {
-    position: relative;
-    z-index: 2;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 2rem;
+    pointer-events: none;
+}
+
+.projects-section .section-title {
+    text-align: center;
+    width: 100%;
+    pointer-events: auto;
 }
 
 .horizontal-scroll-wrapper {
     position: relative;
     width: 100%;
-    overflow: hidden;
+    overflow: visible;
+    overscroll-behavior: none;
+    margin-top: 80px;
 }
 
 .projects-grid {
@@ -454,6 +471,8 @@ body {
     gap: 2rem;
     padding: 2rem 50px;
     will-change: transform;
+    flex-wrap: nowrap;
+    transform: translateX(0);
 }
 
 .project-card-wrapper {

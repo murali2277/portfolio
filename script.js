@@ -2,6 +2,41 @@ import { initSplitterNow } from './splitter.js';
 
 console.log('Script.js loaded');
 
+// Disable right-click context menu
+document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    return false;
+});
+
+// Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U (developer tools shortcuts)
+document.addEventListener('keydown', (e) => {
+    // F12
+    if (e.key === 'F12') {
+        e.preventDefault();
+        return false;
+    }
+    // Ctrl+Shift+I (DevTools)
+    if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+        e.preventDefault();
+        return false;
+    }
+    // Ctrl+Shift+J (Console)
+    if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+        e.preventDefault();
+        return false;
+    }
+    // Ctrl+U (View Source)
+    if (e.ctrlKey && e.key === 'u') {
+        e.preventDefault();
+        return false;
+    }
+    // Ctrl+Shift+C (Inspect Element)
+    if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+        e.preventDefault();
+        return false;
+    }
+});
+
 class TypeWriter {
     constructor(txtElement, words, wait = 3000) {
         this.txtElement = txtElement;
@@ -341,7 +376,16 @@ const ParticleTextEffect = (canvasId, words = ["Hi","It'z Me MK"]) => {
 };
 
 
+// Reset scroll position on page load to prevent overlapping issues after refresh
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Ensure scroll is at top on page load
+    window.scrollTo(0, 0);
+    
     const loadingScreen = document.getElementById('loading-screen');
     const mainContent = document.getElementById('main-content');
     const particleCanvas = document.getElementById('particle-canvas');
@@ -1043,6 +1087,12 @@ function initHorizontalScroll() {
         
         gsap.registerPlugin(ScrollTrigger);
         
+        // Disable ScrollTrigger's automatic refresh on resize
+        ScrollTrigger.config({
+            ignoreMobileResize: true,
+            autoRefreshEvents: 'DOMContentLoaded,load'
+        });
+        
         const projectsSection = document.querySelector('.projects-section');
         const projectsGrid = document.querySelector('.projects-grid');
         
@@ -1051,56 +1101,64 @@ function initHorizontalScroll() {
             return;
         }
 
-        // Kill any existing ScrollTriggers to prevent duplicates
+        // Kill ALL existing ScrollTriggers
         ScrollTrigger.getAll().forEach(st => st.kill());
+        
+        // Reset transforms
+        projectsGrid.style.transform = 'translateX(0)';
 
-        const cards = gsap.utils.toArray('.project-card');
+        const cards = gsap.utils.toArray('.project-card-wrapper');
         if (cards.length === 0) {
             console.warn('No project cards found');
             return;
         }
 
-        // Calculate dimensions
-        const totalWidth = projectsGrid.scrollWidth;
-        const containerWidth = projectsSection.offsetWidth;
-        
-        // End position - ensure last project is fully visible with padding
-        const endOffset = -(totalWidth - containerWidth + 100);
-        
-        // Total scroll distance for smooth scrolling
-        const scrollDistance = Math.abs(endOffset);
-
-        console.log('Horizontal scroll setup:', { totalWidth, containerWidth, endOffset, scrollDistance });
-
-        // Start from left (first projects visible)
-        gsap.set(projectsGrid, { x: 0 });
-
-        // Create smooth horizontal scroll animation
-        gsap.to(projectsGrid, {
-            x: endOffset,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: projectsSection,
-                start: 'top top',
-                end: () => `+=${scrollDistance}`,
-                scrub: 0.5, // Smoother scrub value
-                pin: true,
-                pinSpacing: true,
-                anticipatePin: 1,
-                invalidateOnRefresh: true,
-                snap: {
-                    snapTo: 1, // Snap to end when scroll completes
-                    duration: 3,
-                    ease: 'power1.inOut'
-                }
+        // Wait for layout to settle
+        setTimeout(() => {
+            // Get the last card to ensure it's fully visible
+            const lastCard = cards[cards.length - 1];
+            const totalWidth = projectsGrid.scrollWidth;
+            const containerWidth = window.innerWidth;
+            const lastCardWidth = lastCard ? lastCard.offsetWidth : 350;
+            
+            // Calculate scroll distance - ensure last card is FULLY visible
+            // Add extra padding to make sure the last card is completely shown
+            let scrollDistance = totalWidth - containerWidth + 150;
+            
+            if (scrollDistance <= 0) {
+                console.log('No horizontal scroll needed');
+                return;
             }
-        });
 
-        ScrollTrigger.refresh();
-        console.log('Horizontal scroll initialized with smooth finish');
+            console.log('Horizontal scroll setup:', { totalWidth, containerWidth, scrollDistance, lastCardWidth });
+
+            // Simple and clean horizontal scroll using gsap.to
+            gsap.to(projectsGrid, {
+                x: -scrollDistance,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: projectsSection,
+                    start: 'top top',
+                    end: () => '+=' + (scrollDistance + 500), // Extra scroll buffer for smooth finish
+                    scrub: true,
+                    pin: true,
+                    pinSpacing: true,
+                    anticipatePin: 1,
+                    invalidateOnRefresh: false,
+                    markers: false
+                }
+            });
+
+            console.log('Horizontal scroll initialized successfully');
+        }, 500);
     };
     
-    setTimeout(waitForGSAP, 300);
+    // Wait for DOM to be fully ready
+    if (document.readyState === 'complete') {
+        setTimeout(waitForGSAP, 200);
+    } else {
+        window.addEventListener('load', () => setTimeout(waitForGSAP, 100));
+    }
 }
 function getProjectSpecificTags(projectName) {
     const tagMap = {
