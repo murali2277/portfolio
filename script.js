@@ -573,21 +573,95 @@ function initScrollDownArrow() {
 
 
 function initScrollAnimations() {
-    const animatedElements = document.querySelectorAll('.project-card, .skill-category, .contact-card, .stats-card');
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-                observer.unobserve(entry.target);
+    // Wait for GSAP to be loaded
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        console.warn('GSAP or ScrollTrigger not loaded, falling back to simple animation');
+        // Fallback or retry logic could go here, but for now we'll just return
+        return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 1. Section Titles - Slide up with a slight bounce
+    gsap.utils.toArray('.section-title').forEach(title => {
+        gsap.fromTo(title, 
+            { 
+                y: 50, 
+                opacity: 0 
+            },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                ease: "back.out(1.7)",
+                scrollTrigger: {
+                    trigger: title,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+    });
+
+    // 2. About Me Text - Fade Up
+    const aboutText = document.querySelector('.about-text');
+    if (aboutText) {
+        gsap.fromTo(aboutText,
+            { y: 30, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                scrollTrigger: {
+                    trigger: aboutText,
+                    start: "top 80%"
+                }
+            }
+        );
+    }
+
+    // 3. Staggered Card Reveals (Stats, Skills, Contact)
+    // We'll use batching for better performance on groups of elements
+    const cardGroups = [
+        '.stats-card', 
+        '.skill-category', 
+        '.contact-card'
+    ];
+
+    cardGroups.forEach(selector => {
+        // Check if elements exist before trying to animate
+        if (document.querySelector(selector)) {
+            ScrollTrigger.batch(selector, {
+                onEnter: batch => gsap.fromTo(batch, 
+                    { y: 60, opacity: 0, scale: 0.9 }, 
+                    { 
+                        y: 0, 
+                        opacity: 1, 
+                        scale: 1, 
+                        stagger: 0.15, 
+                        duration: 0.8, 
+                        ease: "power3.out" 
+                    }
+                ),
+                start: "top 90%",
+                once: true // Only animate once
+            });
+        }
+    });
+
+    // 4. Parallax Effect for "About Me" Section Background (if applicable) or floating elements
+    // Adding a subtle parallax to the section titles
+    gsap.utils.toArray('.section-title').forEach(title => {
+        gsap.to(title, {
+            y: -20,
+            ease: "none",
+            scrollTrigger: {
+                trigger: title,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
             }
         });
-    }, { threshold: 0.1 });
-    animatedElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-        observer.observe(el);
     });
 }
 
