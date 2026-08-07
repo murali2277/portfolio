@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://muralikumar.app/Sitemap.xml
+Sitemap: https://buildwithmk.app/sitemap.xml

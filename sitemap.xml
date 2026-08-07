@@ -2,12 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://muralikumar.app/</loc>
+    <loc>https://buildwithmk.app/</loc>
     <lastmod>2025-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://muralikumar.app/assets/mk%20logo.jpg</image:loc>
+      <image:loc>https://buildwithmk.app/assets/mk%20logo.jpg</image:loc>
       <image:title>Murali Kumar S - Python Full Stack Developer Portfolio</image:title>
     </image:image>
   </url>
